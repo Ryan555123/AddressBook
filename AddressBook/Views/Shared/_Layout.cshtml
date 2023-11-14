@@ -1,0 +1,71 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>M9工程通訊錄</title>
+
+    <!--jQuery -->
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+
+    <!--jsGrid-->
+    <script src="~/Scripts/jsgrid.min.js"></script>
+    <link href="~/Scripts/jsgrid.min.css" rel="stylesheet" />
+    <link href="~/Scripts/jsgrid-theme.css" rel="stylesheet" />
+
+    <!--jquery.validate-->
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.js"></script>
+
+    <!--bootstrap-->
+    <link href="~/Content/bootstrap.min_Lumen.css" rel="stylesheet" /> @*@Styles.Render("~/Content/css")*@
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            @Html.Label("M9工程通訊錄", new { @class = "navbar-brand lg" })
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="切換導覽" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                </ul>
+            </div >
+            <div>
+                @if (Request.IsAuthenticated)
+                {
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>
+                            @Html.Label("Hello " + User.Identity.Name + "!", new { @class = "nav-link active" })
+                        </li>
+                        <li></li>
+                        <li>
+                            @Html.ActionLink("登出", "LogOut", "home", new { area = "" }, new { @class = "btn btn-danger btn-sm" })
+                        </li>
+                    </ul>
+                }
+                else
+                {
+                    <ul class="nav navbar-nav navbar-right">
+                        <li>@Html.ActionLink("管理者登入", "Login", "home", new { area = "" }, new { @class = "btn btn-success btn-sm" })</li>
+                    </ul>
+                }
+            </div>
+        </div >
+    </nav >
+    <div class= "container body-content" >
+        @RenderBody()
+        <hr />
+        <footer >
+            <p> &copy; @DateTime.Now.Year 年 @DateTime.Now.Month 月 - M9工程通訊錄</p>
+        </footer>
+    </div>
+
+    @*@Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)*@
+</body>
+</html>

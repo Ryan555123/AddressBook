@@ -1,0 +1,72 @@
+﻿@model IEnumerable<AddressBook.Person>
+
+@{
+    ViewBag.Title = "Index";
+}
+<br />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-2">
+            <h3><b>分類</b></h3>
+            <div>
+                <p>@Html.ActionLink("ALL", "Index", new { Type = "ALL" }, new { @class = "btn btn-default btn-lg" })</p>
+                @foreach (var item in ViewData["Sort_Type"] as List<string>)
+                {
+                    <p>@Html.ActionLink(item, "Index", new { Type = item }, new { @class = "btn btn-default btn-lg" })</p>
+                }
+            </div>
+        </div>
+        <br />
+        <div class="col-md-10">
+            <div>
+                @using (Html.BeginForm("Index", "Home", FormMethod.Get))
+                {
+                    <div class="input-group">
+                        <input type="text" name="user_input" class="form-control" placeholder="請輸入">
+                        <button class="btn btn-primary" type="submit">Search</button>
+                    </div>
+                }
+            </div>
+            <br />
+            <div>
+                <button class="btn btn-warning btn-sm" type="submit" id="BtnExport">Export</button>
+            </div>
+            <br />
+            <div>
+                <table class="table table-striped table-hover text-center align-middle" id="tableAddressBook">
+                    <thead>
+                        <tr class="table-dark">
+                            <th>@Html.Label("中文姓名")</th>
+                            <th>@Html.Label("英文姓名")</th>
+                            <th>@Html.Label("工號")</th>
+                            <th>@Html.Label("分機")</th>
+                            <th>@Html.Label("部門")</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>@Html.DisplayFor(m => item.Name_CH)</td>
+                                <td>@Html.DisplayFor(m => item.Name_EN)</td>
+                                <td>@Html.DisplayFor(m => item.UserNo)</td>
+                                <td>@Html.DisplayFor(m => item.Extension_Num)</td>
+                                <td>@Html.DisplayFor(m => item.Dep)</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/xlsx.full.min.js"></script>
+<script>
+    $("#BtnExport").click(function () {
+        var table = document.getElementById('tableAddressBook');
+        var wb = XLSX.utils.table_to_book(table, { sheet: "Sheet 1" });
+        XLSX.writeFile(wb, 'data.xlsx');
+    })
+</script>
+

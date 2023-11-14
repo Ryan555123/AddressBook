@@ -1,0 +1,95 @@
+﻿
+@{
+    ViewBag.Title = "Admin";
+}
+
+<br />
+<div class="input-group">
+    <input type="text" id="search_str" name="search_str" class="form-control" placeholder="請輸入">
+    <button class="btn btn-primary" type="submit" id="show_By_txt">Search</button>
+</div>
+<br />
+<div id="table"></div>
+
+<style>
+    /* 使用 headerRowClass 直接設定標題列背景顏色 */
+    .custom-header-row {
+        background-color: darkblue; /* 這裡使用了藍色，您可以根據需要更改顏色 */
+        color: #ffffff; /* 文字顏色，這裡使用了白色 */
+    }
+</style>
+
+<script>
+
+    $(function () {
+
+        fillData();
+
+        $("#show_By_txt").click(function () {
+            fillData();
+        });
+    });
+
+    function fillData() {
+        $("#table").jsGrid({
+            width: "100%",
+            height: "1000px",
+            filtering: false,
+            inserting: true,
+            editing: true,
+            sorting: true,
+            paging: true,
+            pageSize: 20,
+            pageIndex: 1,
+            autoload: true,
+            headerRowClass: "custom-header-row",
+            controller: {
+                loadData: function (filter) {
+                    return $.ajax({
+                        type: "GET",
+                        url: "@Url.Content("~/home/AjaxData/")",
+                        data: 'SearchStr=' + $("#search_str").val(),
+                        success: function () {
+                            console.log($("#search_str").val());
+                        }
+                    });
+                },
+                insertItem: function (item) {
+                    return $.ajax({
+                        type: "POST",
+                        url: "@Url.Content("~/api/AddressBookAPI/")",
+                        data: item,
+                        success: function () {
+                            fillData();
+                        }
+                    });
+                },
+                updateItem: function (item) {
+                    return $.ajax({
+                        type: "PUT",
+                        url: "@Url.Content("~/api/AddressBookAPI/")",
+                        data: item
+                    });
+                },
+                deleteItem: function (item) {
+                    return $.ajax({
+                        type: "DELETE",
+                        url: "@Url.Content("~/api/AddressBookAPI/")",
+                        data: item
+                    });
+                }
+            },
+            fields: [
+                { type: "control", width: 50 },
+                { name: "Id", title: "Id", type: "text", width: 100 },
+                { name: "Name_CH", title: "Name_CH", type: "text", width: 100 },
+                { name: "Name_EN", title: "Name_EN", type: "text", width: 100 },
+                { name: "UserNo", title: "UserNo", type: "text", width: 100 },
+                { name: "Extension_Num", title: "Extension_Num", type: "text", width: 100 },
+                { name: "Dep", title: "Dep", type: "text", width: 100 },
+                { name: "Type", title: "Type", type: "text", width: 100 }
+               ]
+            });
+        }
+
+</script>
