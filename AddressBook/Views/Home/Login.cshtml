@@ -4,9 +4,52 @@
     ViewBag.Title = "Login";
 }
 
+<script>
+
+    $(function () {
+        $("#btnLogin").click(function () {
+            if ($("#TxtAccount").val() == "" || $("#TxtPassword").val() == "") {
+                Swal.fire({
+                    icon: 'warning',
+                    title: '空值欄位',
+                    text: '帳號密碼有空值欄位'
+                });
+            }
+            else {
+                $.ajax({
+                    type: "POST",
+                    url: "/Home/Login/",
+                    data: $("#form1").serialize(),
+                    success: function (result) {
+                        if (result.loginStatus) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: result.message,
+                                showConfirmButton: false,
+                                timer: 1000,
+                                // 登入成功後跳轉到指定的URL
+                                onClose: function () {
+                                    window.location.href = result.redirectUrl;
+                                }
+                            });
+                        }
+                        else {
+                            Swal.fire({
+                                icon: 'error',
+                                title: '登入失敗',
+                                text: result.message
+                            });
+                        }
+                    }
+                });
+            }
+        })
+    });
+
+</script>
+
 <div style="padding: 200px 0">
-    @using (Html.BeginForm("login" , "home" , FormMethod.Post))
-    {
+    <form id="form1">
         <div class="container">
             <div class="row">
                 <div class="col-md-4"></div>
@@ -20,17 +63,17 @@
                             <br />
                             <div class="form-group row" style="margin:auto">
                                 @Html.Label("帳號")
-                                @Html.TextBox("account", "", new { @class = "form-control", Required = "required" })
+                                <input id="TxtAccount" name="TxtAccount" type="text" class="form-control" required="required"/>
                             </div>
                             <br />
                             <div class="form-group row" style="margin:auto">
                                 @Html.Label("密碼")
-                                @Html.Password("password", "", new { @class = "form-control", Required = "required" })
+                                <input id="TxtPassword" name="TxtPassword" type="password" class="form-control" required="required" />
                             </div>
                             <br /><br />
                             <label style="color:red">@ViewBag.Errmsg</label>
                             <div class="form-group row" style="margin:auto">
-                                <button class="btn btn-lg btn-success" type="submit">送出</button>
+                                <input id="btnLogin" type="button" value="送出" class="btn btn-lg btn-success" />
                             </div>
                             <br />
                             @Html.ActionLink("回首頁", "Index", "home")
@@ -40,6 +83,6 @@
                 <div class="col-md-4"></div>
             </div>
         </div>
-    }
+    </form>
 </div>
 

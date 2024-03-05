@@ -49,12 +49,12 @@ namespace AddressBook.Controllers
         }
 
         [HttpPost]
-        public ActionResult Login(string account , string password)
+        public JsonResult Login(string TxtAccount, string TxtPassword)
         {
             if(ModelState.IsValid)
             {
                 var Account = new Account();
-                if(Account.CheckAccount(account , password))
+                if(Account.CheckAccount(TxtAccount, TxtPassword))
                 {
                     var ticket = new FormsAuthenticationTicket(
                             version: 1,
@@ -70,12 +70,11 @@ namespace AddressBook.Controllers
                     var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, encryptedTicket);
                     Response.Cookies.Add(cookie);
 
-                    return RedirectToAction("Admin");
+                    return Json(new { loginStatus = true, message = "登入成功" , redirectUrl = Url.Action("Admin", "Home") });
                 }
             }
 
-            ViewData["Errmsg"] = "帳號密碼錯誤 !";
-            return View();
+            return Json(new { loginStatus = false, message = "無效的使用者名稱或密碼" });
         }
 
         public ActionResult LogOut()
@@ -84,11 +83,18 @@ namespace AddressBook.Controllers
             return RedirectToAction("Index");
         }
 
+        public ActionResult Error(string SearchStr)
+        {
+            return View();
+        }
+
+        [Authorize]
         public ActionResult Admin()
         {
             return View();
         }
 
+        [Authorize]
         public JsonResult AjaxData(string SearchStr)
         {
             if(SearchStr == null)

@@ -26,42 +26,27 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="white" class="bi bi-journal" viewBox="0 0 16 16">
-                <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2z" />
-                <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1H1z" />
-            </svg>
-            <div style="width:10px"></div>
-            @Html.ActionLink("M9工程通訊錄", "Index", "Home", new { area = "" }, new { @class = "navbar-brand lg" })
-
+            @Html.Label("M9工程通訊錄", new { @class = "navbar-brand lg" })
             <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" title="切換導覽" aria-controls="navbarSupportedContent"
                     aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
                 <ul class="navbar-nav flex-grow-1">
+                    <li>@Html.ActionLink("回功能頁面", "Index", "Home", new { area = "" }, new { @class = "nav-link active" })</li>
                 </ul>
-            </div>
-            <div>
                 <ul class="navbar-nav">
-                    @if (User.Identity.IsAuthenticated)
-                    {
-                        <li>@Html.ActionLink("回管理頁面", "Admin", "Home", new { area = "" }, new { @class = "btn btn-secondary btn-sm" })</li>
-                    }
-                    else
-                    {
-                        <li>@Html.ActionLink("管理者登入", "Login", "Home", new { area = "" }, new { @class = "btn btn-light btn-sm" })</li>
-                    }
+                    <li>@Html.ActionLink("登出", "Logout", "Home", new { area = "" }, new { @class = "btn btn-danger btn-sm" })</li>
                 </ul>
             </div>
-        </div>
-    </nav>
-    <div class="image"></div>
-    <div class="container body-content">
+        </div >
+    </nav >
+    <div class= "container body-content" >
         @RenderBody()
         <hr />
-        <footer>
+        <footer >
             <p> &copy; @DateTime.Now.Year 年 @DateTime.Now.Month 月 - M9工程通訊錄</p>
         </footer>
     </div>
